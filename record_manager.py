@@ -3,12 +3,13 @@
 import MySQLdb
 import datetime
 from sql_conn import *
+from utils import *
 
 MYSQL_CONFIG = {
-    "host": "10.0.4.58",
+    "host": "127.0.0.1",
     "user": "root",
     "port": "3306",
-    "passwd": "cyz2016chinaG",
+    "passwd": "",
     "charset": "utf8"
 }
 
@@ -28,7 +29,6 @@ class RecordManager (object):
 
 
 	def add(self, date, title, record, text, leaflet, create_time=None):
-		cursor = self.conn.cursor()
 		if not create_time:
 			create_time = get_now_time()
 
