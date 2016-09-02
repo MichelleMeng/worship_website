@@ -1,0 +1,213 @@
+# coding:utf8
+
+from gevent import monkey
+monkey.patch_all()
+import MySQLdb
+import logging
+from pool import ConnectionPool
+
+
+logging.basicConfig(level=logging.DEBUG)
+LOGGER = logging.getLogger("sqlpool")
+
+
+class DBConfig(object):
+    # mysql 配置
+    host = "127.0.0.1"
+    port = 3306
+    passwd = ""
+    charset = "utf8"
+    user = "root"
+
+
+class SqlConn(object):
+    '''sql curd'''
+    def __init__(self, db_name, conn=None, auto_trans=True, *args, **kwargs):
+        super(SqlConn, self).__init__()
+        self.db_name = db_name
+        self.conn = conn
+        if auto_trans is True:
+            self._trans_end = True
+        else:
+            self._trans_end = False
+
+        if conn is None:
+            self.auto_close_conn = True
+        else:
+            self.auto_close_conn = False
+
+    def __enter__(self):
+
+        if self.conn is None:
+            self.conn = self.get_conn(self.db_name)
+
+        self.cur = self.conn.cursor()
+
+    def __exit__(self, exc, value, tb):
+
+        self.cur.close()
+        if exc:
+            self.conn.rollback()
+            self.call_after_commit()
+        else:
+            if self._trans_end is True:
+                self.conn.commit()
+                self.call_after_commit()
+
+        if self.auto_close_conn and self._trans_end is True:
+            self.close_conn()
+
+    def close_conn(self):
+
+        # 关闭连接
+        self.conn.close()
+        self.conn = None
+
+    def select_db(self, db_name):
+        self.db_name = db_name
+
+    def get_conn(self, db_name):
+
+        if not self.conn:
+            raise Exception("No connection exists.")
+
+        self.conn.select_db(db_name)
+        return self.conn
+
+
+    def exec_sql(self, sql, args=None):
+
+        with self:
+            self.cur = self.conn.cursor(MySQLdb.cursors.DictCursor)
+            self.cur.execute(sql, args=args)
+            result = self.cur.fetchall()
+            return result
+
+    def exec_update(self, sql, args=None):
+
+        with self:
+            self.cur = self.conn.cursor(MySQLdb.cursors.DictCursor)
+            row_count = self.cur.execute(sql, args=args)
+            return row_count
+
+    def exec_insert(self, sql, args=None):
+        with self:
+            self.cur.execute(sql, args=args)
+            last_id = self.conn.insert_id()
+            return last_id
+
+    def insert(self, table_name, obj_dict, mode='insert', print_sql=False):
+        try:
+            assert mode in ("insert", 'replace', 'insert_or_update')
+        except AssertionError:
+            LOGGER.error("mode must be in `insert`、`replace`、`insert_or_update`")
+            raise
+        placeholders = ', '.join(["%s"] * len(obj_dict) )
+
+        columns = ', '.join(obj_dict.keys())
+        args = obj_dict.values()
+        start = ''
+        if mode == 'insert' or mode == 'insert_or_update':
+            start = "INSERT INTO "
+        elif mode == 'ignore':
+            start = 'INSERT IGNORE INTO '
+        elif mode == 'replace':
+            start = "REPLACE INTO "
+        else:
+            raise
+        sql = "%s %s ( %s ) VALUES ( %s )" % (start, table_name, columns, placeholders)
+
+        if mode == "insert_or_update":
+            update = ['%s=%s' % (key, '%s') for key in obj_dict.keys()]
+            sql += " ON DUPLICATE KEY UPDATE %s" % (','.join(update),)
+            args = args*2
+
+        if print_sql:
+            LOGGER.debug("sql:{}".format(sql))
+            LOGGER.debug("args:{}".format(args))
+
+        with self:
+            self.cur.execute(sql, args=args)
+            last_id = self.conn.insert_id()
+            return last_id
+
+    def update(self, table_name, query_dict, update_dict, print_sql=False, sql_row_count=0):
+        # 添加a=a+1和a=a-1的支持
+        query, args = SqlConn.gen_sql_query(query_dict)
+        update = ', '.join(['%s=%s' % (key, str(value) if isinstance(value, Field) else '%s')
+                            for key, value in update_dict.items()])
+        args = [item for item in update_dict.values() if isinstance(item, Field) is False] + args
+        sql = "update %s set %s %s " %(table_name, update, query)
+        if print_sql:
+            LOGGER.debug("sql:{}".format(sql))
+            LOGGER.debug("args:{}".format(args))
+
+        with self:
+            row_count = self.cur.execute(sql, args=args)
+            try:
+                assert sql_row_count == 0 or row_count == sql_row_count
+            except AssertionError:
+                LOGGER.error("{} don't effect {} rows".format(sql, sql_row_count))
+                raise
+        return row_count
+
+    def delete(self, table_name, query_dict, print_sql=False, sql_row_count=0):
+
+        query, args = SqlConn.gen_sql_query(query_dict)
+        sql = "delete from %s %s" % (table_name, query)
+
+        if print_sql:
+            LOGGER.debug("sql:{}".format(sql))
+            LOGGER.debug("args:{}".format(args))
+
+        with self:
+            row_count = self.cur.execute(sql, args=args)
+            try:
+                assert sql_row_count == 0 or row_count == sql_row_count
+            except AssertionError:
+                LOGGER.error("{} don't effect {} rows".format(sql, sql_row_count))
+                raise
+
+        return row_count
+
+    def query(self, table_name,query_dict={},fields=['*'],page=0,page_num=50,
+                       group_by='',order_by='',print_sql=False, slave=False):
+
+        if page == 0:
+            page_p = " "
+        else:
+            start = page*page_num-page_num
+            page_p = " limit %s,%s" % (start, page_num)
+
+        query, args = SqlConn.gen_sql_query(query_dict)
+        sql = "select %s from %s %s %s %s %s" % (','.join(fields), table_name, query, group_by, order_by, page_p)
+        if print_sql:
+            LOGGER.debug("sql:{}".format(sql))
+            LOGGER.debug("args:{}".format(args))
+
+        with self:
+            self.cur = self.conn.cursor(MySQLdb.cursors.DictCursor)
+            self.cur.execute(sql, args=args)
+            result = self.cur.fetchall()
+            return result
+
+
+
+class SqlPool(SqlConn):
+
+    def __init__(self, host='127.0.0.1', port=3306, user='', passwd='', db='', charset='utf8', pool_size=2, time_to_sleep=30):
+        super(SqlPool, self).__init__(db_name=db)
+        self.pool = ConnectionPool(host, port, user, passwd, pool_size=pool_size, time_to_sleep=time_to_sleep)
+
+    def set_auto_trans(self, auto_trans=True):
+        self._trans_end = auto_trans
+
+    def get_conn(self, db_name):
+        conn = self.pool.get()
+        conn.select_db(db_name)
+        return conn
+
+    def call_after_commit(self):
+        self.auto_close_conn = False
+        self.pool.put(self.conn)
+        self.conn = None
