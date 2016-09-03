@@ -45,8 +45,8 @@ class RecordManager (object):
 		return obj_dict
 
 		
-record_manager = RecordManager(RecordManager.TABLE)
+
 
 if __name__ == '__main__':  #命令行执行的入口
-	record_manager.add('2016-9-2', 'title_test', 'record_test', 'text_test', 'leaf_test')
-	# pass
+	
+	pass
