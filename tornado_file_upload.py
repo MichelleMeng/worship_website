@@ -31,8 +31,8 @@ class MainHandler(tornado.web.RequestHandler):
                 leaf_link = '/static/leaflet/' + time_now + leaf['filename']
         
         self.write('Upload finished')
-        # record_manager = RecordManager(RecordManager.TABLE)
-        # record_manager.add('2016-9-2', 'title_test', rcd_link, txt_link, leaf_link)
+        record_manager = RecordManager(RecordManager.TABLE)
+        record_manager.add('2016-9-2', 'title_test', rcd_link, txt_link, leaf_link)
 
 
 
@@ -43,7 +43,7 @@ application = tornado.web.Application([
 if __name__ == "__main__":
 	try: 
 	    app = application
-	    app.listen(8896)
+	    app.listen(8895)
 	    tornado.ioloop.IOLoop.current().start()
 	except Exception, e:
 		traceback.print_exc()

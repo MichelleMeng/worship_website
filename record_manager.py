@@ -19,7 +19,7 @@ def get_now_time(format="%Y-%m-%d %H:%M:%S"):
     return datetime.datetime.now().strftime(format=format)
     
 
-class RecordManager (object):
+class RecordManager(object):
 
 	TABLE = 'worship'
 
@@ -44,9 +44,17 @@ class RecordManager (object):
 		obj_dict['id'] = last_insert_id
 		return obj_dict
 
-		
+	def show_all(self):
+		ret = self.pool.query(self.table, query_dict={}, fields=['*'])
+		for item in ret:
+			item['date'] = str(item['date'])
+			item['create_time'] = str(item['create_time'])
+			item['update_time'] = str(item['update_time'])
+		return ret
 
 
 if __name__ == '__main__':  #命令行执行的入口
-	
+	# r_manager = RecordManager(RecordManager.TABLE)
+	# r_manager.add(20160904, 'title_loooooooooooooooong', 'record2', 'text2', 'leaf2')
+	# print r_manager.show_all()
 	pass

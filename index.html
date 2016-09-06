@@ -1,0 +1,18 @@
+<html>
+<head><title>Shenzhen Worship</title></head>
+<body>
+<h2>Sunday Worship</h2>
+	<table border = "1">
+		<tr>
+			<th>Date</th>
+			<th>Title</th>
+		</tr>
+		{%for record in records%}
+		<tr>
+			<td>{{escape(record['date'])}}</td>
+			<td><a href="worship.html">{{escape(record['title'])}}</a></td>
+		</tr>
+		{%end%}
+	</table>
+</body>
+</html>

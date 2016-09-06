@@ -193,3 +193,62 @@ class SqlConn(object):
             return result
 
 
+    @staticmethod
+    def gen_sql_query(query_dict):
+
+        query = ""
+        if not query_dict:
+            return query,None
+
+        args = []
+        for key, value in query_dict.items():
+            key = key.split("__")
+            op = key[1] if len(key) == 2 else 'eq'
+            sql_operator = SqlConn.get_sql_operator(op)
+
+            if not query:
+                place = "where"
+            else:
+                place = "and"
+
+            if sql_operator == 'in':
+                query += " %s %s in (%s)" % (place, key[0], ','.join(['%s']*len(value)),)
+                args.extend(list(value))
+            elif sql_operator == 'nin':
+                query += " %s %s not in (%s)" % (place, key[0], ','.join(['%s']*len(value)),)
+                args.extend(list(value))
+            elif sql_operator == 'sql':
+                query += " %s %s" % (place, value)
+            elif isinstance(value, Field):
+                query += " %s %s %s %s" % (place, key[0], sql_operator, value)
+            else:
+                query += " %s %s %s %s" % (place, key[0], sql_operator, '%s')
+                args.append(value)
+
+        return query,args
+
+    @staticmethod
+    def get_sql_operator(op):
+
+        operator_dict = {
+            'gt': '>',
+            'gte': '>=',
+            'eq': '=',
+            'neq': '!=',
+            'lt': '<',
+            'lte': '<=',
+            'in': 'in',
+            'nin': 'nin',
+            'like': 'like',
+            'regexp': 'regexp',
+            'sql': 'sql',
+        }
+
+        try:
+            assert op in operator_dict
+        except AssertionError:
+            LOGGER.error("not supported operator")
+            raise
+
+        return operator_dict[op]
+
