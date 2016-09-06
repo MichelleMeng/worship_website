@@ -1,7 +1,7 @@
 <html>
-<head><title>Shenzhen Worship</title></head>
+<head><title>Sunday Worship</title></head>
 <body>
-<h2>Sunday Worship</h2>
+<h2>This Week's Worship</h2>
 	<table border = "1">
 		<tr>
 			<th>Date</th>
@@ -10,7 +10,7 @@
 		{%for record in records%}
 		<tr>
 			<td>{{escape(record['date'])}}</td>
-			<td><a href="worship.html">{{escape(record['title'])}}</a></td>
+			<td>{{escape(record['title'])}}</td>
 		</tr>
 		{%end%}
 	</table>
