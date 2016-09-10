@@ -1,18 +1,25 @@
 <html>
-<head><title>Sunday Worship</title></head>
+<head><title>Sunday Worship</title>
+<script type="text/javascript">
+	$(function(){
+  		$.Load({{ static_url(record['text_link']) }})
+	})
+</script>
+</head>
 <body>
 <h2>This Week's Worship</h2>
-	<table border = "1">
-		<tr>
-			<th>Date</th>
-			<th>Title</th>
-		</tr>
-		{%for record in records%}
-		<tr>
-			<td>{{escape(record['date'])}}</td>
-			<td>{{escape(record['title'])}}</td>
-		</tr>
-		{%end%}
-	</table>
+	<ul>
+	<li>Date: {{record['date']}}</li>
+	<li>Title: {{record['title']}}</li>
+	<li>Record: 
+		<audio src={{ static_url(record['record_link']) }} controls="controls">
+		Your browser does not support the audio tag.
+		</audio>
+	</li>
+	<li>Script: <a target="_blank" href={{ static_url(record['text_link']) }}>View The Script</a></li>
+	<li>Leaflet: <a target="_blank" href={{ static_url(record['leaflet_link']) }}>View The Leaflet</a></li>
+	</ul>
+	<br/><br/>
+	<p>This is the script</p><br/>
 </body>
 </html>

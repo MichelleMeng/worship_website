@@ -10,7 +10,7 @@
 		{%for record in records%}
 		<tr>
 			<td>{{escape(record['date'])}}</td>
-			<td><a href="/entry/{{(record['date'])}}">{{escape(record['title'])}}</a></td>
+			<td><a target="_blank" href="/entry/{{(record['id'])}}">{{escape(record['title'])}}</a></td>
 		</tr>
 		{%end%}
 	</table>

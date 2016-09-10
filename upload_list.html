@@ -1,0 +1,33 @@
+<html>
+<head><title>View All</title></head>
+<body>
+<h3>All records</h3>
+<button onclick="window.open('/create_new')">Create New</button><br/>
+<table border = "1">
+		<tr>
+			<th>Edit</th>
+			<th>Date</th>
+			<th>Title</th>
+			<th>Audio</th>
+			<th>Script</th>
+			<th>Leaflet</th>
+			<th>Create Time</th>
+			<th>Update Time</th>
+			<th>Delete</th>
+		</tr>
+		{%for record in records%}
+		<tr>
+			<td><button>Edit</button></td>
+			<td>{{escape(record['date'])}}</td>
+			<td>{{escape(record['title'])}}</td>
+			<td><a target="_blank" href={{static_url (record['record_link'])}}>View audio</a></td>
+			<td><a target="_blank" href={{static_url (record['text_link'])}}>View script</a></td>
+			<td><a target="_blank" href={{static_url (record['leaflet_link'])}}>View leaflet</a></td>
+			<td>{{escape(record['create_time'])}}</td>
+			<td>{{escape(record['update_time'])}}</td>
+			<td><button>Delete</button></td>
+		</tr>
+		{%end%}
+	</table>
+</body>
+</html>

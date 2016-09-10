@@ -21,6 +21,14 @@ class DBConfig(object):
     user = "root"
 
 
+class Field(object):
+    def __init__(self, string):
+        self.string = string
+
+    def __str__(self):
+        return self.string
+
+
 class SqlConn(object):
     '''sql curd'''
     def __init__(self, db_name, conn=None, auto_trans=True, *args, **kwargs):

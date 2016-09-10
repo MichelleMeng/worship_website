@@ -52,6 +52,28 @@ class RecordManager(object):
 			item['update_time'] = str(item['update_time'])
 		return ret
 
+	def get_by_date(self, date):
+		query_dict = {'date': date}
+		ret = self.pool.query(self.table, query_dict=query_dict, fields=['*'])
+		for item in ret:
+			item['date'] = str(item['date'])
+			item['create_time'] = str(item['create_time'])
+			item['update_time'] = str(item['update_time'])
+		if not ret:
+			return []
+		return ret
+
+	def get_by_id(self, entry_id):
+		query_dict = {'id': entry_id}
+		ret = self.pool.query(self.table, query_dict=query_dict, fields=['*'])
+		for item in ret:
+			item['date'] = str(item['date'])
+			item['create_time'] = str(item['create_time'])
+			item['update_time'] = str(item['update_time'])
+		if not ret:
+			return []
+		return ret
+
 
 if __name__ == '__main__':  #命令行执行的入口
 	# r_manager = RecordManager(RecordManager.TABLE)

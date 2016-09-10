@@ -5,16 +5,16 @@ import tornado.web
 import os
 from record_manager import *
 
+record_manager = RecordManager(RecordManager.TABLE)
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-    	record_manager = RecordManager(RecordManager.TABLE)
         records = record_manager.show_all()
-        # self.write("record is {{records}}")
         self.render("index.html", records=records)
 
 class EntryHandler(tornado.web.RequestHandler):
-	def get(self, entry_date):
-		self.render("worship.html")
+	def get(self, entry_id):
+		entry = record_manager.get_by_id(entry_id)
+		self.render("worship.html", record = entry[0])
 
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
@@ -31,5 +31,5 @@ def make_app():
 
 if __name__ == "__main__":
     app = make_app()
-    app.listen(8832)
+    app.listen(8802)
     tornado.ioloop.IOLoop.current().start()
