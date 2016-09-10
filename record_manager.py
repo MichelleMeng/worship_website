@@ -23,6 +23,18 @@ class RecordManager(object):
 
 	TABLE = 'worship'
 
+	TABLE_SCHEMA = '''CREATE TABLE IF NOT EXISTS `worship`(
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+			`date` date NOT NULL DEFAULT '0000-00-00',
+            `title` varchar(64) NOT NULL DEFAULT '',
+            `record_link` varchar(64) NOT NULL DEFAULT '',
+			`text_link` varchar(64) NOT NULL DEFAULT '',
+			`leaflet_link` varchar(64) NOT NULL DEFAULT '',
+            `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+            `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+            PRIMARY KEY(`id`)
+            ) ENGINE=InnoDB default charset=utf8;'''
+
 	def __init__(self, table):
 		self.table = table
 		self.pool = SqlPool(db="records", **MYSQL_CONFIG)
