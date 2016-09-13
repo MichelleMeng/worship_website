@@ -56,6 +56,29 @@ class RecordManager(object):
 		obj_dict['id'] = last_insert_id
 		return obj_dict
 
+
+	def update(self, entry_id, date, title, record, text, leaflet, update_time=None):
+		if not update_time:
+			update_time = get_now_time()
+
+		obj_dict = {}
+		obj_dict['date'] = date
+		obj_dict['title'] = title
+		obj_dict['record_link'] = record
+		obj_dict['text_link'] = text
+		obj_dict['leaflet_link'] = leaflet
+		obj_dict['update_time'] = update_time
+
+		affected_rows = self.pool.update(self.table, query_dict=query_dict, update_dict=update_dict)
+		return affected_rows
+
+
+	def delete(self, entry_id):
+		query_dict = {'id': entry_id}
+		self.pool.delete(self.table, query_dict=query_dict)
+		return
+
+
 	def show_all(self):
 		ret = self.pool.query(self.table, query_dict={}, fields=['*'])
 		for item in ret:
@@ -74,6 +97,7 @@ class RecordManager(object):
 		if not ret:
 			return []
 		return ret
+
 
 	def get_by_id(self, entry_id):
 		query_dict = {'id': entry_id}

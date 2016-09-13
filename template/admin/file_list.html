@@ -17,7 +17,7 @@
 		</tr>
 		{%for record in records%}
 		<tr>
-			<td><button>Edit</button></td>
+			<td><button onclick="window.open('/admin/update/{{(record['id'])}}')">Edit</button></td>
 			<td>{{escape(record['date'])}}</td>
 			<td>{{escape(record['title'])}}</td>
 			<td><a target="_blank" href={{static_url (record['record_link'])}}>View audio</a></td>
