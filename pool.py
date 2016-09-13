@@ -28,7 +28,7 @@ def _singleton(cls, *args, **kwargs):
 @_singleton
 class ConnectionPool:
 
-    def __init__(self, host='', port=3306, user='', passwd='', pool_size=10, time_to_sleep=30):
+    def __init__(self, host='127.0.0.1', port=3306, user='root', passwd='123456', pool_size=10, time_to_sleep=30):
         self.username = user
         self.password = passwd
         self.host = host
