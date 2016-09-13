@@ -16,7 +16,7 @@ class DBConfig(object):
     # mysql 配置
     host = "127.0.0.1"
     port = 3306
-    passwd = ""
+    passwd = "123456"
     charset = "utf8"
     user = "root"
 

@@ -22,26 +22,28 @@ class CreateNewHandler(tornado.web.RequestHandler):
     	themeofweek = self.get_argument('title')
 
     	rcdfile = self.request.files['record']
-    	time_now = time.strftime("%Y%m%d%H%M%S_", time.localtime())
+    	# time_now = time.strftime("%Y%m%d%H%M%S_", time.localtime())
         for rcd in rcdfile:
-            with open('./static/record/' + time_now + rcd['filename'], 'wb') as f:
+            rcdname = rcd['filename'].replace(' ','_')
+            with open('./static/record/' + rcdname, 'wb') as f:
                 f.write(rcd['body'])
-                rcd_link = "record/" + time_now + rcd['filename']
+                rcd_link = "record/" + rcdname
             
         txtfile = self.request.files['text']
         for txt in txtfile:
-            with open('./static/text/' + time_now + txt['filename'], 'wb') as f:
+            txtname = txt['filename'].replace(' ','_')
+            with open('./static/text/' + txtname, 'wb') as f:
                 f.write(txt['body'])
-                txt_link = "text/" + time_now + txt['filename']
+                txt_link = "text/" + txtname
             
         leaffile = self.request.files['leaflet']
         for leaf in leaffile:
             leafname = leaf['filename'].replace(' ','_')
-            with open('./static/leaflet/' + leafname , 'wb') as f:
+            with open('./static/leaflet/' + leafname, 'wb') as f:
                 f.write(leaf['body'])
                 leaf_link = 'leaflet/' + leafname
         
-        self.redirect("/upload_finish")
+        self.redirect("/admin/upload_finish")
         record_manager = RecordManager(RecordManager.TABLE)
         record_manager.add(worshipdate, themeofweek, rcd_link, txt_link, leaf_link)
 
@@ -60,9 +62,9 @@ settings = {
 
 
 application = tornado.web.Application([
-    (r"/view_all", ListAllHandler),
-    (r"/create_new", CreateNewHandler),
-    (r"/upload_finish", UploadFinishHandler)
+    (r"/admin/view_all", ListAllHandler),
+    (r"/admin/create_new", CreateNewHandler),
+    (r"/admin/upload_finish", UploadFinishHandler)
 ], **settings)
 
 

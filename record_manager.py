@@ -9,7 +9,7 @@ MYSQL_CONFIG = {
     "host": "127.0.0.1",
     "user": "root",
     "port": "3306",
-    "passwd": "",
+    "passwd": "123456",
     "charset": "utf8"
 }
 
