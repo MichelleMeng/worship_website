@@ -75,4 +75,5 @@ if __name__ == "__main__":
 	    app.listen(8893)
 	    tornado.ioloop.IOLoop.current().start()
 	except Exception, e:
-		traceback.print_exc()
+		print e
+		# traceback.print_exc()
