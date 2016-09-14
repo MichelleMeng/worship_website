@@ -25,7 +25,7 @@
 			<td><a target="_blank" href={{static_url (record['leaflet_link'])}}>View leaflet</a></td>
 			<td>{{escape(record['create_time'])}}</td>
 			<td>{{escape(record['update_time'])}}</td>
-			<td><button>Delete</button></td>
+			<td><form name="delete" method="post" action="/admin/delete/{{(record['id'])}}" onsubmit="javascript:return window.confirm('Sure to delete this entry?')"><input type="submit" value="Delete"/></form></td>
 		</tr>
 		{%end%}
 	</table>

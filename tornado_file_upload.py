@@ -14,6 +14,13 @@ class ListAllHandler(tornado.web.RequestHandler):
         self.render("template/admin/file_list.html", records=records)
 
 
+class DeleteHandler(tornado.web.RequestHandler):
+    def post(self, entry_id):
+        record_manager = RecordManager(RecordManager.TABLE)
+        record_manager.delete(entry_id)
+        self.redirect("/admin/view_all")
+
+
 class CreateNewHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("template/admin/upload_files.html")
@@ -99,6 +106,7 @@ settings = {
 
 application = tornado.web.Application([
     (r"/admin/view_all", ListAllHandler),
+    (r"/admin/delete/([0-9a-zA-Z-]+)", DeleteHandler),
     (r"/admin/create_new", CreateNewHandler),
     (r"/admin/update/([0-9a-zA-Z-]+)", UpdateHandler),
     (r"/admin/finish", UploadFinishHandler)
@@ -109,7 +117,7 @@ application = tornado.web.Application([
 if __name__ == "__main__":
 	try: 
 	    app = application
-	    app.listen(8899)
+	    app.listen(8895)
 	    tornado.ioloop.IOLoop.current().start()
 	except Exception, e:
 		print e
