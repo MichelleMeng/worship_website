@@ -9,12 +9,12 @@ record_manager = RecordManager(RecordManager.TABLE)
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         records = record_manager.show_all()
-        self.render("index.html", records=records)
+        self.render("template/index.html", records=records)
 
 class EntryHandler(tornado.web.RequestHandler):
 	def get(self, entry_id):
 		entry = record_manager.get_by_id(entry_id)
-		self.render("worship.html", record = entry[0])
+		self.render("template/worship.html", record = entry[0])
 
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),

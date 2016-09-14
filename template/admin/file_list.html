@@ -17,7 +17,7 @@
 		</tr>
 		{%for record in records%}
 		<tr>
-			<td><button>Edit</button></td>
+			<td><button onclick="window.open('/admin/update/{{(record['id'])}}')">Edit</button></td>
 			<td>{{escape(record['date'])}}</td>
 			<td>{{escape(record['title'])}}</td>
 			<td><a target="_blank" href={{static_url (record['record_link'])}}>View audio</a></td>
@@ -25,7 +25,7 @@
 			<td><a target="_blank" href={{static_url (record['leaflet_link'])}}>View leaflet</a></td>
 			<td>{{escape(record['create_time'])}}</td>
 			<td>{{escape(record['update_time'])}}</td>
-			<td><button>Delete</button></td>
+			<td><form name="delete" method="post" action="/admin/delete/{{(record['id'])}}" onsubmit="javascript:return window.confirm('Sure to delete this entry?')"><input type="submit" value="Delete"/></form></td>
 		</tr>
 		{%end%}
 	</table>
