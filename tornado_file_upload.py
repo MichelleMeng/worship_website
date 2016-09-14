@@ -51,7 +51,7 @@ class CreateNewHandler(tornado.web.RequestHandler):
                 f.write(leaf['body'])
                 leaf_link = 'leaflet/' + leafname
         
-        self.redirect("/admin/upload_finish")
+        self.redirect("/admin/finish")
         record_manager = RecordManager(RecordManager.TABLE)
         record_manager.add(worshipdate, themeofweek, rcd_link, txt_link, leaf_link)
 
