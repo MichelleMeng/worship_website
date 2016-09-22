@@ -11,6 +11,7 @@
 			<th>Audio</th>
 			<th>Script</th>
 			<th>Leaflet</th>
+			<th>PPT</th>
 			<th>Create Time</th>
 			<th>Update Time</th>
 			<th>Delete</th>
@@ -20,9 +21,10 @@
 			<td><button onclick="window.open('/admin/update/{{(record['id'])}}')">Edit</button></td>
 			<td>{{escape(record['date'])}}</td>
 			<td>{{escape(record['title'])}}</td>
-			<td><a target="_blank" href={{static_url (record['record_link'])}}>View audio</a></td>
+			<td><a target="_blank" href={{escape(record['xmly_link'])}}>View audio</a></td>
 			<td><a target="_blank" href={{static_url (record['text_link'])}}>View script</a></td>
 			<td><a target="_blank" href={{static_url (record['leaflet_link'])}}>View leaflet</a></td>
+			<td><a target="_blank" href={{static_url (record['ppt_link'])}}>View PPT</a></td>
 			<td>{{escape(record['create_time'])}}</td>
 			<td>{{escape(record['update_time'])}}</td>
 			<td><form name="delete" method="post" action="/admin/delete/{{(record['id'])}}" onsubmit="javascript:return window.confirm('Sure to delete this entry?')"><input type="submit" value="Delete"/></form></td>

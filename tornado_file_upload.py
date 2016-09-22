@@ -28,6 +28,7 @@ class CreateNewHandler(tornado.web.RequestHandler):
     def post(self):
     	worshipdate = self.get_argument('date')
     	themeofweek = self.get_argument('title')
+        xmlylink = self.get_argument('xmly')
 
     	rcdfile = self.request.files['record']
     	# time_now = time.strftime("%Y%m%d%H%M%S_", time.localtime())
@@ -50,10 +51,17 @@ class CreateNewHandler(tornado.web.RequestHandler):
             with open('./static/leaflet/' + leafname, 'wb') as f:
                 f.write(leaf['body'])
                 leaf_link = 'leaflet/' + leafname
+
+        pptfile = self.request.files['ppt']
+        for ppt in pptfile:
+            pptname = ppt['filename'].replace(' ','_')
+            with open('./static/ppt/' + pptname, 'wb') as f:
+                f.write(ppt['body'])
+                ppt_link = 'ppt/' + pptname
         
         self.redirect("/admin/finish")
         record_manager = RecordManager(RecordManager.TABLE)
-        record_manager.add(worshipdate, themeofweek, rcd_link, txt_link, leaf_link)
+        record_manager.add(worshipdate, themeofweek, xmlylink, rcd_link, txt_link, leaf_link, ppt_link)
 
 
 class UpdateHandler(tornado.web.RequestHandler):
@@ -65,6 +73,7 @@ class UpdateHandler(tornado.web.RequestHandler):
     def post(self):
         worshipdate = self.get_argument('date')
         themeofweek = self.get_argument('title')
+        xmlylink = self.get_argument('xmly')
 
         rcdfile = self.request.files['record']
         for rcd in rcdfile:
@@ -86,9 +95,16 @@ class UpdateHandler(tornado.web.RequestHandler):
             with open('./static/leaflet/' + leafname, 'wb') as f:
                 f.write(leaf['body'])
                 leaf_link = 'leaflet/' + leafname
+
+        pptfile = self.request.files['ppt']
+        for ppt in pptfile:
+            pptname = ppt['filename'].replace(' ','_')
+            with open('./static/ppt/' + pptname, 'wb') as f:
+                f.write(ppt['body'])
+                ppt_link = 'ppt/' + pptname
         
         self.redirect("/admin/finish")
-        record_manager.update(worshipdate, themeofweek, rcd_link, txt_link, leaf_link)
+        record_manager.update(worshipdate, themeofweek, xmlylink, rcd_link, txt_link, leaf_link, ppt_link)
 
 
 class UploadFinishHandler(tornado.web.RequestHandler):
@@ -96,29 +112,29 @@ class UploadFinishHandler(tornado.web.RequestHandler):
         self.render("template/admin/finished.html")
 
 
-settings = {
-    "static_path": os.path.join(os.path.dirname(__file__), "static"),
-    # "cookie_secret": "61oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=",
-    # "login_url": "/login",
-    # "xsrf_cookies": True,
-}
+# settings = {
+#     "static_path": os.path.join(os.path.dirname(__file__), "static"),
+#     # "cookie_secret": "61oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=",
+#     # "login_url": "/login",
+#     # "xsrf_cookies": True,
+# }
 
 
-application = tornado.web.Application([
-    (r"/admin/view_all", ListAllHandler),
-    (r"/admin/delete/([0-9a-zA-Z-]+)", DeleteHandler),
-    (r"/admin/create_new", CreateNewHandler),
-    (r"/admin/update/([0-9a-zA-Z-]+)", UpdateHandler),
-    (r"/admin/finish", UploadFinishHandler)
-], **settings)
+# application = tornado.web.Application([
+#     (r"/admin/view_all", ListAllHandler),
+#     (r"/admin/delete/([0-9a-zA-Z-]+)", DeleteHandler),
+#     (r"/admin/create_new", CreateNewHandler),
+#     (r"/admin/update/([0-9a-zA-Z-]+)", UpdateHandler),
+#     (r"/admin/finish", UploadFinishHandler)
+# ], **settings)
 
 
 
-if __name__ == "__main__":
-	try: 
-	    app = application
-	    app.listen(8895)
-	    tornado.ioloop.IOLoop.current().start()
-	except Exception, e:
-		print e
-		# traceback.print_exc()
+# if __name__ == "__main__":
+# 	try: 
+# 	    app = application
+# 	    app.listen(8895)
+# 	    tornado.ioloop.IOLoop.current().start()
+# 	except Exception, e:
+# 		print e
+# 		# traceback.print_exc()

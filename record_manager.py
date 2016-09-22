@@ -27,9 +27,11 @@ class RecordManager(object):
             `id` int(11) NOT NULL AUTO_INCREMENT,
 			`date` date NOT NULL DEFAULT '0000-00-00',
             `title` varchar(64) NOT NULL DEFAULT '',
+            `xmly_link` varchar(64) NOT NULL DEFAULT '',
             `record_link` varchar(64) NOT NULL DEFAULT '',
 			`text_link` varchar(64) NOT NULL DEFAULT '',
 			`leaflet_link` varchar(64) NOT NULL DEFAULT '',
+			`ppt_link` varchar(64) NOT NULL DEFAULT '',
             `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
             `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
             PRIMARY KEY(`id`)
@@ -40,16 +42,18 @@ class RecordManager(object):
 		self.pool = SqlPool(db="records", **MYSQL_CONFIG)
 
 
-	def add(self, date, title, record, text, leaflet, create_time=None):
+	def add(self, date, title, xmly_link, record, text, leaflet, ppt, create_time=None):
 		if not create_time:
 			create_time = get_now_time()
 
 		obj_dict = {}
 		obj_dict['date'] = date
 		obj_dict['title'] = title
+		obj_dict['xmly_link'] = xmly_link
 		obj_dict['record_link'] = record
 		obj_dict['text_link'] = text
 		obj_dict['leaflet_link'] = leaflet
+		obj_dict['ppt_link'] = ppt
 		obj_dict['create_time'] = create_time
 
 		last_insert_id = self.pool.insert(self.table, obj_dict=obj_dict)
@@ -57,16 +61,18 @@ class RecordManager(object):
 		return obj_dict
 
 
-	def update(self, entry_id, date, title, record, text, leaflet, update_time=None):
+	def update(self, entry_id, date, title, xmly_link, record, text, leaflet, ppt, update_time=None):
 		if not update_time:
 			update_time = get_now_time()
 
 		obj_dict = {}
 		obj_dict['date'] = date
 		obj_dict['title'] = title
+		obj_dict['xmly_link'] = xmly_link
 		obj_dict['record_link'] = record
 		obj_dict['text_link'] = text
 		obj_dict['leaflet_link'] = leaflet
+		obj_dict['ppt_link'] = ppt
 		obj_dict['update_time'] = update_time
 
 		affected_rows = self.pool.update(self.table, query_dict=query_dict, update_dict=update_dict)

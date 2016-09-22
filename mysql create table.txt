@@ -9,4 +9,10 @@ CREATE TABLE IF NOT EXISTS `worship`(
             `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
             PRIMARY KEY(`id`)
             ) ENGINE=InnoDB default charset=utf8;
-            
+			
+
+alter table worship add xmly_link varchar(64) NOT NULL DEFAULT '';
+alter table worship add ppt_link varchar(64) NOT NULL DEFAULT '';
+
+alter table worship modify xmly_link varchar(64) NOT NULL DEFAULT '' after title;
+alter table worship modify ppt_link varchar(64) NOT NULL DEFAULT '' after leaflet_link;

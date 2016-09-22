@@ -1,25 +1,35 @@
+<!DOCTYPE html>
 <html>
 <head><title>Sunday Worship</title>
-<script type="text/javascript">
-	$(function(){
-  		$.Load({{ static_url(record['text_link']) }})
-	})
+<link rel="stylesheet" type="text/css" href="{{ static_url('css/stylesheet.css') }}"/>
+<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js""></script>
+<script>
+$(document).ready(function() {
+	$('#txt_script').load("{{static_url(record['text_link'])}}");
+})
 </script>
 </head>
-<body>
+<body id='bg'>
 <h2>This Week's Worship</h2>
 	<ul>
 	<li>Date: {{record['date']}}</li>
 	<li>Title: {{record['title']}}</li>
-	<li>Record: 
-		<audio src={{ static_url(record['record_link']) }} controls="controls">
+	<li>Audio: <a target="_blank" href={{escape(record['xmly_link'])}}>Listen to The Audio</a></li>
+	<!--
+	<li>Audio: 
+		<audio src="{{ static_url(record['record_link']) }}" controls="controls">
 		Your browser does not support the audio tag.
 		</audio>
 	</li>
+	-->
 	<li>Script: <a target="_blank" href={{ static_url(record['text_link']) }}>View The Script</a></li>
-	<li>Leaflet: <a target="_blank" href={{ static_url(record['leaflet_link']) }}>View The Leaflet</a></li>
+	<li>Bulletin: <a target="_blank" href={{ static_url(record['leaflet_link']) }}>View The Bulletin</a></li>
+	<li>PPT: <a target="_blank" href={{ static_url(record['ppt_link']) }}>View The PPT</a></li>
 	</ul>
-	<br/><br/>
-	<p>This is the script</p><br/>
+	<br/>
+	<div>
+	<p>Bible Readings: </p>
+	<p id="txt_script"></p>
+	</div>
 </body>
 </html>
