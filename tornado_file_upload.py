@@ -30,13 +30,13 @@ class CreateNewHandler(tornado.web.RequestHandler):
     	themeofweek = self.get_argument('title')
         xmlylink = self.get_argument('xmly')
 
-    	rcdfile = self.request.files['record']
-    	# time_now = time.strftime("%Y%m%d%H%M%S_", time.localtime())
-        for rcd in rcdfile:
-            rcdname = rcd['filename'].replace(' ','_')
-            with open('./static/record/' + rcdname, 'wb') as f:
-                f.write(rcd['body'])
-                rcd_link = "record/" + rcdname
+    	# rcdfile = self.request.files['record']
+    	# # time_now = time.strftime("%Y%m%d%H%M%S_", time.localtime())
+     #    for rcd in rcdfile:
+     #        rcdname = rcd['filename'].replace(' ','_')
+     #        with open('./static/record/' + rcdname, 'wb') as f:
+     #            f.write(rcd['body'])
+     #            rcd_link = "record/" + rcdname
             
         txtfile = self.request.files['text']
         for txt in txtfile:
@@ -61,7 +61,7 @@ class CreateNewHandler(tornado.web.RequestHandler):
         
         self.redirect("/admin/finish")
         record_manager = RecordManager(RecordManager.TABLE)
-        record_manager.add(worshipdate, themeofweek, xmlylink, rcd_link, txt_link, leaf_link, ppt_link)
+        record_manager.add(worshipdate, themeofweek, xmlylink, '', txt_link, leaf_link, ppt_link)
 
 
 class UpdateHandler(tornado.web.RequestHandler):
@@ -75,12 +75,12 @@ class UpdateHandler(tornado.web.RequestHandler):
         themeofweek = self.get_argument('title')
         xmlylink = self.get_argument('xmly')
 
-        rcdfile = self.request.files['record']
-        for rcd in rcdfile:
-            rcdname = rcd['filename'].replace(' ','_')
-            with open('./static/record/' + rcdname, 'wb') as f:
-                f.write(rcd['body'])
-                rcd_link = "record/" + rcdname
+        # rcdfile = self.request.files['record']
+        # for rcd in rcdfile:
+        #     rcdname = rcd['filename'].replace(' ','_')
+        #     with open('./static/record/' + rcdname, 'wb') as f:
+        #         f.write(rcd['body'])
+        #         rcd_link = "record/" + rcdname
             
         txtfile = self.request.files['text']
         for txt in txtfile:
@@ -104,7 +104,7 @@ class UpdateHandler(tornado.web.RequestHandler):
                 ppt_link = 'ppt/' + pptname
         
         self.redirect("/admin/finish")
-        record_manager.update(worshipdate, themeofweek, xmlylink, rcd_link, txt_link, leaf_link, ppt_link)
+        record_manager.update(worshipdate, themeofweek, xmlylink, '', txt_link, leaf_link, ppt_link)
 
 
 class UploadFinishHandler(tornado.web.RequestHandler):

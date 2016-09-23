@@ -200,6 +200,27 @@ class SqlConn(object):
             result = self.cur.fetchall()
             return result
 
+    def query_sort(self, table_name,query_dict={},fields=['*'],page=0,page_num=50,
+                       group_by='',order_by='',print_sql=False, slave=False):
+
+        if page == 0:
+            page_p = " "
+        else:
+            start = page*page_num-page_num
+            page_p = " limit %s,%s" % (start, page_num)
+
+        query, args = SqlConn.gen_sql_query(query_dict)
+        sql = "select %s from %s %s %s %s %s order by date desc" % (','.join(fields), table_name, query, group_by, order_by, page_p)
+        if print_sql:
+            LOGGER.debug("sql:{}".format(sql))
+            LOGGER.debug("args:{}".format(args))
+
+        with self:
+            self.cur = self.conn.cursor(MySQLdb.cursors.DictCursor)
+            self.cur.execute(sql, args=args)
+            result = self.cur.fetchall()
+            return result
+
 
     @staticmethod
     def gen_sql_query(query_dict):

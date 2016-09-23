@@ -9,11 +9,13 @@
 		<tr>
 			<th>Date</th>
 			<th>Title</th>
+			<th>Update Time</th>
 		</tr>
 		{%for record in records%}
 		<tr>
 			<td>{{escape(record['date'])}}</td>
 			<td><a target="_blank" href="/entry/{{(record['id'])}}">{{escape(record['title'])}}</a></td>
+			<td>{{escape(record['create_time'])}}</td>
 		</tr>
 		{%end%}
 	</table>

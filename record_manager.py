@@ -86,7 +86,7 @@ class RecordManager(object):
 
 
 	def show_all(self):
-		ret = self.pool.query(self.table, query_dict={}, fields=['*'])
+		ret = self.pool.query_sort(self.table, query_dict={}, fields=['*'])
 		for item in ret:
 			item['date'] = str(item['date'])
 			item['create_time'] = str(item['create_time'])
