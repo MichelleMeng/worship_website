@@ -7,7 +7,11 @@
 <link rel="stylesheet" type="text/css" href="{{ static_url('css/stylesheet.css') }}"/>
 </head>
 <body id='bg'>
-<h2>Sunday Worship</h2>
+<div id='header'>
+
+<h1><img id='logo' src="{{ static_url('logo/logo_3.png') }}" alt="logo">Shenzhen Worship</h1>
+</div>
+<div id='list'>
 	<table border = "1">
 		<tr>
 			<th>Date</th>
@@ -22,5 +26,6 @@
 		</tr>
 		{%end%}
 	</table>
+</div>
 </body>
 </html>

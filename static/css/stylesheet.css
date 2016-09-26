@@ -5,3 +5,21 @@
 @media only screen and (max-width:449px){
 
 }
+
+#header {
+	position: relative;
+
+}
+
+#logo {
+	vertical-align: baseline;
+	height: 100px;
+	margin-right: 20px;
+	margin-left: 20px;
+}
+
+
+#list {
+	clear: left;
+	position: relative;
+}
