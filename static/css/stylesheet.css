@@ -8,17 +8,19 @@
 
 #header {
 	position: relative;
-	white-space: nowrap;
-	width: 100%;
+	width: auto;
 }
 
 #logo {
 	vertical-align: baseline;
-	height: 100px;
+	height: 80px;
 	margin-right: 20px;
 	margin-left: 20px;
 }
 
+h1 {
+	font-size: 1.8em;
+}
 
 #list {
 	clear: left;
