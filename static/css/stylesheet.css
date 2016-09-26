@@ -6,6 +6,13 @@
 
 }
 
+#preloadedImages {
+       width: 0px;
+       height: 0px;
+       display: inline;
+       background-image: url("{{ static_url('logo/logo_3.png') }}");
+}
+
 #header {
 	position: relative;
 	width: auto;
@@ -16,7 +23,6 @@
 	height: 90px;
 	margin-right: 20px;
 	margin-left: 10px;
-	background: url("{{ static_url('logo/logo_3.png') }}") no-repeat -9999px -9999px;
 }
 
 h1 {
