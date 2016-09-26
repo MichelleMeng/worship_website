@@ -9,6 +9,7 @@
 #header {
 	position: relative;
 	white-space: nowrap;
+	width: 100%;
 }
 
 #logo {
