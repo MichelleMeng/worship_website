@@ -1,3 +1,7 @@
 #bg {
 	background-color: #FFF5EE;
 }
+
+@media only screen and (max-width:449px){
+
+}
