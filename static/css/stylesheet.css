@@ -20,16 +20,15 @@
 }
 
 #logo_div {
-	
+	height: 90px;
+	width: 90px;
 	display: inline;
-	width: 80px;
-	height: 100px;
 }
 
 #logo {
+	height: 90px;
 	margin-right: 20px;
 	margin-left: 10px;
-	height: 90px;
 }
 
 h1 {
