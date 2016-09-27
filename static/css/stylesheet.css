@@ -19,11 +19,17 @@
 	margin-bottom: 10px;
 }
 
-#logo {
+#logo_div {
+	position: relative;
 	display: inline;
-	height: 90px;
+	width: 80px;
+	height: 100px;
+}
+
+#logo {
 	margin-right: 20px;
 	margin-left: 10px;
+	height: 90px;
 }
 
 h1 {
