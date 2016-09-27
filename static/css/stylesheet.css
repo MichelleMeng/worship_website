@@ -15,17 +15,19 @@
 
 #header {
 	position: relative;
-	width: auto;
+	
+	margin-bottom: 10px;
 }
 
 #logo {
-	vertical-align: baseline;
+	display: inline;
 	height: 90px;
 	margin-right: 20px;
 	margin-left: 10px;
 }
 
 h1 {
+	display: inline;
 	font-size: 1.8em;
 }
 
