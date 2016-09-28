@@ -22,17 +22,20 @@
 #logo_div {
 	height: 90px;
 	width: 90px;
-	display: inline;
+	display: inline-block;
+	padding: 10px;
+	margin: 5px;
+	box-shadow: -2px -2px 2px #efefef, 5px 5px 5px #b9b9b9;
 }
 
 #logo {
 	height: 90px;
-	margin-right: 20px;
-	margin-left: 10px;
+	margin-left: 8px;
+	margin-right: 8px;
 }
 
 h1 {
-	display: inline;
+	display: inline-block;
 	font-size: 1.8em;
 }
 
