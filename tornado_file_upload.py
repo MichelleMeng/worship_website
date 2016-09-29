@@ -28,40 +28,54 @@ class CreateNewHandler(tornado.web.RequestHandler):
     def post(self):
     	worshipdate = self.get_argument('date')
     	themeofweek = self.get_argument('title')
+        if not self.get_argument('xmly'):
+            xmlylink = ''
         xmlylink = self.get_argument('xmly')
 
-    	# rcdfile = self.request.files['record']
-    	# # time_now = time.strftime("%Y%m%d%H%M%S_", time.localtime())
-     #    for rcd in rcdfile:
-     #        rcdname = rcd['filename'].replace(' ','_')
-     #        with open('./static/record/' + rcdname, 'wb') as f:
-     #            f.write(rcd['body'])
-     #            rcd_link = "record/" + rcdname
+    	if not self.request.files.has_key('record'):
+            rcd_link = ''
+        else:
+            rcdfile = self.request.files['record']
+        	# time_now = time.strftime("%Y%m%d%H%M%S_", time.localtime())
+            for rcd in rcdfile:
+                rcdname = rcd['filename'].replace(' ','_')
+                with open('./static/record/' + rcdname, 'wb') as f:
+                    f.write(rcd['body'])
+                    rcd_link = "record/" + rcdname
             
-        txtfile = self.request.files['text']
-        for txt in txtfile:
-            txtname = txt['filename'].replace(' ','_')
-            with open('./static/text/' + txtname, 'wb') as f:
-                f.write(txt['body'])
-                txt_link = "text/" + txtname
+        if self.request.files.has_key('text'):
+            txtfile = self.request.files['text']
+            for txt in txtfile:
+                txtname = txt['filename'].replace(' ','_')
+                with open('./static/text/' + txtname, 'wb') as f:
+                    f.write(txt['body'])
+                    txt_link = "text/" + txtname
+        else:
+            txt_link = ''
             
-        leaffile = self.request.files['leaflet']
-        for leaf in leaffile:
-            leafname = leaf['filename'].replace(' ','_')
-            with open('./static/leaflet/' + leafname, 'wb') as f:
-                f.write(leaf['body'])
-                leaf_link = 'leaflet/' + leafname
+        if self.request.files.has_key('leaflet'):
+            leaffile = self.request.files['leaflet']
+            for leaf in leaffile:
+                leafname = leaf['filename'].replace(' ','_')
+                with open('./static/leaflet/' + leafname, 'wb') as f:
+                    f.write(leaf['body'])
+                    leaf_link = 'leaflet/' + leafname
+        else:
+            leaf_link = ''
 
-        pptfile = self.request.files['ppt']
-        for ppt in pptfile:
-            pptname = ppt['filename'].replace(' ','_')
-            with open('./static/ppt/' + pptname, 'wb') as f:
-                f.write(ppt['body'])
-                ppt_link = 'ppt/' + pptname
+        if not self.request.files.has_key('ppt'):
+            ppt_link = ''
+        else:
+            pptfile = self.request.files['ppt']
+            for ppt in pptfile:
+                pptname = ppt['filename'].replace(' ','_')
+                with open('./static/ppt/' + pptname, 'wb') as f:
+                    f.write(ppt['body'])
+                    ppt_link = 'ppt/' + pptname
         
         self.redirect("/admin/finish")
         record_manager = RecordManager(RecordManager.TABLE)
-        record_manager.add(worshipdate, themeofweek, xmlylink, '', txt_link, leaf_link, ppt_link)
+        record_manager.add(worshipdate, themeofweek, xmlylink, rcd_link, txt_link, leaf_link, ppt_link)
 
 
 class UpdateHandler(tornado.web.RequestHandler):
@@ -96,6 +110,8 @@ class UpdateHandler(tornado.web.RequestHandler):
                 f.write(leaf['body'])
                 leaf_link = 'leaflet/' + leafname
 
+        if self.request.files['ppt'] == []:
+            ppt_link = ''
         pptfile = self.request.files['ppt']
         for ppt in pptfile:
             pptname = ppt['filename'].replace(' ','_')

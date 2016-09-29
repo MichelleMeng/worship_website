@@ -17,7 +17,7 @@ $(document).ready(function() {
 	<ul>
 	<li>Date: {{record['date']}}</li>
 	<li>Title: {{record['title']}}</li>
-	<li>Audio: <a target="_blank" href={{escape(record['xmly_link'])}}>Listen to The Audio</a></li>
+	<li>Audio: {% if record['xmly_link'] == '' %} No audio this week {% else %}<a target="_blank" href={{escape(record['xmly_link'])}}>Listen to The Audio</a>{% end %}</li>
 	<!--
 	<li>Audio: 
 		<audio src="{{ static_url(record['record_link']) }}" controls="controls">
@@ -25,9 +25,11 @@ $(document).ready(function() {
 		</audio>
 	</li>
 	-->
-	<li>Script: <a target="_blank" href={{ static_url(record['text_link']) }}>View The Script</a></li>
-	<li>Bulletin: <a target="_blank" href={{ static_url(record['leaflet_link']) }}>View The Bulletin</a></li>
-	<li>PPT: <a target="_blank" href={{ static_url(record['ppt_link']) }}>View The PPT</a></li>
+	<li>Script: {% if record['text_link'] == '' %} No script this week {% else %} <a target="_blank" href={{ static_url(record['text_link']) }}>View The Script</a>{% end %}</li>
+
+	<li>Bulletin: {% if record['leaflet_link'] == '' %} No bulletin this week {% else %} <a target="_blank" href={{ static_url(record['leaflet_link']) }}>View The Bulletin</a>{% end %}</li>
+	
+	<li>PPT: {% if record['ppt_link'] == '' %} No ppt this week {% else %}<a target="_blank" href={{ static_url(record['ppt_link']) }}>View The PPT</a> {% end %} </li>
 	</ul>
 	<br/>
 	<div>
