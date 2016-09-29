@@ -25,8 +25,10 @@ $(document).ready(function() {
 		</audio>
 	</li>
 	-->
+	<!--
 	<li>Script: {% if record['text_link'] == '' %} No script this week {% else %} <a target="_blank" href={{ static_url(record['text_link']) }}>View The Script</a>{% end %}</li>
-
+	-->
+	
 	<li>Bulletin: {% if record['leaflet_link'] == '' %} No bulletin this week {% else %} <a target="_blank" href={{ static_url(record['leaflet_link']) }}>View The Bulletin</a>{% end %}</li>
 	
 	<li>PPT: {% if record['ppt_link'] == '' %} No ppt this week {% else %}<a target="_blank" href={{ static_url(record['ppt_link']) }}>View The PPT</a> {% end %} </li>
