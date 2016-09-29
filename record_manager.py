@@ -14,7 +14,6 @@ MYSQL_CONFIG = {
 }
 
 
-
 def get_now_time(format="%Y-%m-%d %H:%M:%S"):
     return datetime.datetime.now().strftime(format=format)
     
@@ -61,20 +60,29 @@ class RecordManager(object):
 		return obj_dict
 
 
-	def update(self, entry_id, date, title, xmly_link, record, text, leaflet, ppt, update_time=None):
+	def update(self, entry_id, title, xmly_link, record, text, leaflet, ppt, update_time=None):
 		if not update_time:
 			update_time = get_now_time()
+		query_dict = {'id': entry_id}
 
-		obj_dict = {}
-		obj_dict['date'] = date
-		obj_dict['title'] = title
-		obj_dict['xmly_link'] = xmly_link
-		obj_dict['record_link'] = record
-		obj_dict['text_link'] = text
-		obj_dict['leaflet_link'] = leaflet
-		obj_dict['ppt_link'] = ppt
-		obj_dict['update_time'] = update_time
+		update_dict = {}
+		if title:
+			update_dict['title'] = title
+		if xmly_link:
+			update_dict['xmly_link'] = xmly_link
+		if record:
+			update_dict['record_link'] = record
+		if text:
+			update_dict['text_link'] = text
+		if leaflet:
+			update_dict['leaflet_link'] = leaflet
+		if ppt:
+			update_dict['ppt_link'] = ppt
+		if update_time:
+			update_dict['update_time'] = update_time
 
+		if not update_dict:
+			return 0
 		affected_rows = self.pool.update(self.table, query_dict=query_dict, update_dict=update_dict)
 		return affected_rows
 

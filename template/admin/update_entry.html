@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head><title>Update</title></head>
+<body>
+<h2>Entry to Update</h2>
+<form action="/admin/update/{{(old_rcd['id'])}}" enctype="multipart/form-data" method='post'>
+		<p>Worship Date: {{old_rcd['date']}}</p>
+		
+		<p>Old title: {{old_rcd['title']}}</p>
+		<p>New title: </p>
+		<input type='text' name='title'/><br/><br/><br/>
+		<p>Old audio link: {{escape(old_rcd['xmly_link'])}}</p>
+		<p>New audio link: </p>
+		<input type='text' name='xmly'/><br/><br/><br/>
+		<!--
+		<p>Audio file:</p>
+		<input type='file' name='record'/><br/><br/>
+		-->
+		<p>Old script file: {{escape(old_rcd['text_link'])}} </p>
+		<p>New script file: </p>
+		<input type='file' name='text'/><br/><br/><br/>
+		<p>Old bulletin file: {{escape(old_rcd['leaflet_link'])}}</p>
+		<p>New bulletin file: </p>
+		<input type='file' name='leaflet'/><br/><br/><br/>
+		<p>Old ppt file: {{escape(old_rcd['ppt_link'])}}</p>
+		<p>New ppt file: </p>
+		<input type='file' name='ppt'/><br/><br/><br/>
+		<br/><br/>
+		<input type='submit' value='submit'/>
+		</form><br/>
+
+<!--
+<ul>
+	<form action="/admin/update/{{(old_rcd['id'])}}" enctype="multipart/form-data" method='post'>
+	<li>Date: {{old_rcd['date']}} (date can't be changed)</li>
+	<li>Old title: {{old_rcd['title']}} </li>
+	<li>New title: <input type='text' name='title'/> </li><br/><br/>
+
+	<li>Old audio link: {{escape(old_rcd['xmly_link'])}} </li>
+	<li>New audio link: <input type='text' name='xmly'/> </li><br/><br/>
+
+	<li>Old script file: {{escape(old_rcd['text_link'])}} </li>
+	<li>New script file: <input type='file' name='text'/> </li><br/><br/>
+	
+	<li>Old bulletin file: {{escape(old_rcd['leaflet_link'])}} </li>
+	<li>New bulletin file: <input type='file' name='leaflet'/> </li><br/><br/>
+	
+	<li>Old ppt file: {{escape(old_rcd['ppt_link'])}} </li>
+	<li>New ppt file: <input type='file' name='ppt'/> </li><br/><br/>
+
+	<input type='submit' value='Update'/>
+	</form>
+</ul>
+-->
+
+</body>
+</html>
