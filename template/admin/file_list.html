@@ -20,7 +20,7 @@
 		<tr>
 			<td><button onclick="window.open('/admin/update/{{(record['id'])}}')">Edit</button></td>
 			<td>{{escape(record['date'])}}</td>
-			<td>{{escape(record['title'])}}</td>
+			<td>{{record['title']}}</td>
 			<td><a target="_blank" href={{escape(record['xmly_link'])}}>View audio</a></td>
 			<td><a target="_blank" href={{static_url (record['text_link'])}}>View script</a></td>
 			<td><a target="_blank" href={{static_url (record['leaflet_link'])}}>View leaflet</a></td>
